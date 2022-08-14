@@ -62,37 +62,100 @@ public class MyLinkedList<T> implements IList<T> {
     }
 
     @Override
-    public boolean delete(Object o) {
+    public boolean delete(T t) {
+        Node prev = this.head;
+        Node current = prev.next;
+
+        while (current != null) {
+            if (current.data.equals(t)) {
+                prev.next = current.next;
+                current.next = null;
+                this.size--;
+                return true;
+            }
+            prev = prev.next;
+            current = current.next;
+
+        }
+
         return false;
     }
 
     @Override
     public boolean deleteByIndex(int index) {
-        return false;
+        if (index >= this.size || index < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node prev = this.head;
+        Node current = prev.next;
+
+        int i = 0;
+        while (i++ < index) {
+            prev = prev.next;
+            current = current.next;
+        }
+
+        //삭제
+       prev.next =  current.next;
+       current.next = null;
+       this.size--;
+
+        return true;
     }
 
     @Override
     public T get(int index) {
-        return null;
+        if (index >= this.size || index < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node current = this.head.next;
+        int i = 0;
+
+        //Node current = this.head;     // 이경우는 헤더에 데이터가 있는 경우를 구현한 것임
+        //int i = -1;                   // 헌데 헤더에 데이터가 실제 있는건 아니기 때문에 이 경우보다는 위에 있는 두줄로 구현함
+
+        while (i++ < index) {
+            current = current.next;
+        }
+
+        return current.data;
     }
 
     @Override
-    public int indexOf(Object o) {
-        return 0;
+    public int indexOf(T t) {
+        Node current = this.head.next;
+        int index = 0;
+        while (current != null) {
+            if (current.data != null && current.data.equals(t)) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        }
+        return -1;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.head.next == null;
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(T t) {
+        Node current  = this.head.next;
+        while (current != null) {
+            if (current.data != null && current.data.equals(t)) {
+                return true;
+            }
+            current = current.next;
+        }
         return false;
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 }
