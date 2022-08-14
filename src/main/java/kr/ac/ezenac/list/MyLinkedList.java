@@ -1,6 +1,14 @@
 package kr.ac.ezenac.list;
 
-public class MyLinkedList<T> implements IList {
+public class MyLinkedList<T> implements IList<T> {
+
+    private int size;
+    private Node head;
+
+    public MyLinkedList() {
+        this.size = 0;
+        this.head = new Node(null);         // dummy head node
+    }
 
     private class Node {
         T data;
@@ -17,18 +25,40 @@ public class MyLinkedList<T> implements IList {
     }
 
     @Override
-    public void add(Object o) {
-
+    public void add(T t) {
+        Node current = this.head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        Node n = new Node(t);
+        current.next = n;
+        this.size++;
     }
 
     @Override
-    public void insert(int index, Object o) {
+    public void insert(int index, T t) {
+        if (index > this.size || index < 0) {
+            throw new IndexOutOfBoundsException();
+        }
 
+        Node prev = this.head;
+        Node current = prev.next;
+
+        int i = 0;
+        while (i++ < index) {
+            prev = prev.next;
+            current = current.next;
+        }
+
+        Node newNode = new Node(t, current);
+        prev.next = newNode;
+        this.size++;
     }
 
     @Override
     public void clear() {
-
+        this.size = 0;
+        this.head.next = null;
     }
 
     @Override
@@ -42,7 +72,7 @@ public class MyLinkedList<T> implements IList {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         return null;
     }
 
